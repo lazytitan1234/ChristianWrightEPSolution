@@ -7,8 +7,11 @@ namespace Presentation.Controllers
 {
     public class PollController : Controller
     {
-        public PollController()
+        private PollRepository _pollRepository;
+
+        public PollController(PollRepository pollRepository)
         {
+            _pollRepository = pollRepository;
         }
 
         [HttpGet]
