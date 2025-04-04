@@ -8,9 +8,9 @@ namespace Presentation.Controllers
 {
     public class PollController : Controller
     {
-        private readonly PollRepository _pollRepository;
+        private readonly IPollRepository _pollRepository;
 
-        public PollController(PollRepository pollRepository)
+        public PollController(IPollRepository pollRepository)
         {
             _pollRepository = pollRepository;
         }
@@ -29,7 +29,7 @@ namespace Presentation.Controllers
 
         [HttpPost]
         public IActionResult Create(string title, string option1Text, string option2Text, string option3Text,
-                                    [FromServices] PollRepository injectedRepo)
+                                    [FromServices] IPollRepository injectedRepo)
         {
             injectedRepo.CreatePoll(
                 title,
@@ -54,7 +54,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Vote(int id, int selectedOption, [FromServices] PollRepository injectedRepo)
+        public IActionResult Vote(int id, int selectedOption, [FromServices] IPollRepository injectedRepo)
         {
             injectedRepo.Vote(id, selectedOption);
             return RedirectToAction("Results", new { id = id });

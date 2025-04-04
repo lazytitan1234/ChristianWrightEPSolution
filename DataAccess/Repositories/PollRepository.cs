@@ -7,9 +7,9 @@ using DataAccess.DataContext;
 
 namespace DataAccess.Repositories
 {
-    public class PollRepository
+    public class PollRepository : IPollRepository
     {
-        private PollDbContext _context;
+        private readonly PollDbContext _context;
 
         public PollRepository(PollDbContext context)
         {
@@ -35,7 +35,6 @@ namespace DataAccess.Repositories
             _context.Polls.Add(poll);
             _context.SaveChanges();
         }
-
 
         public IEnumerable<Poll> GetPolls()
         {
