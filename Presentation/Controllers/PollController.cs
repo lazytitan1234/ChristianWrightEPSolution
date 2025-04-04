@@ -1,44 +1,48 @@
-﻿using DataAccess.Repositories;
-using Domain.Models;
+﻿using DataAccess;
+using DataAccess.Repositories;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Presentation.Controllers
 {
     public class PollController : Controller
     {
-        private PollRepository _pollRepository;
+        private readonly PollRepository _pollRepository;
 
         public PollController(PollRepository pollRepository)
         {
             _pollRepository = pollRepository;
         }
 
+        public IActionResult Index()
+        {
+            var polls = _pollRepository.GetPolls();
+            return View(polls);
+        }
+
         [HttpGet]
-        public IActionResult CreatePoll()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreatePoll(string title, string option1Text, string option2Text, string option3Text,
-                                        PollRepository pollRepository) 
+        public IActionResult Create(string title, string option1Text, string option2Text, string option3Text,
+                                    [FromServices] PollRepository injectedRepo)
         {
-            if (ModelState.IsValid)
-            {
-                pollRepository.CreatePoll(
-                    title,
-                    option1Text,
-                    option2Text,
-                    option3Text,
-                    0, 0, 0,
-                    DateTime.Now
-                );
+            injectedRepo.CreatePoll(
+                title,
+                option1Text,
+                option2Text,
+                option3Text,
+                0, 0, 0,
+                DateTime.Now
+            );
 
-                return RedirectToAction("PollList");
-            }
-
-            return View();
+            TempData["message"] = "Poll created successfully!";
+            return RedirectToAction("Index");
         }
     }
 }
