@@ -1,77 +1,57 @@
 ﻿@model IEnumerable<Domain.Models.Poll>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Polls";
 }
 
-<h1>Index</h1>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Poll List</h2>
+        <a asp-action="Create" class="btn btn-primary">+ New Poll</a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option1Text)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option2Text)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option3Text)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option1VotesCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option2VotesCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Option3VotesCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option1Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option2Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option3Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option1VotesCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option2VotesCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Option3VotesCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No polls found.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Option 1</th>
+                        <th>Option 2</th>
+                        <th>Option 3</th>
+                        <th>Votes 1</th>
+                        <th>Votes 2</th>
+                        <th>Votes 3</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var poll in Model)
+                    {
+                        <tr>
+                            <td>@poll.Title</td>
+                            <td>@poll.Option1Text</td>
+                            <td>@poll.Option2Text</td>
+                            <td>@poll.Option3Text</td>
+                            <td>@poll.Option1VotesCount</td>
+                            <td>@poll.Option2VotesCount</td>
+                            <td>@poll.Option3VotesCount</td>
+                            <td>@poll.DateCreated.ToShortDateString()</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@poll.Id" class="btn btn-sm btn-info">Details</a>
+                                <a asp-action="Edit" asp-route-id="@poll.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@poll.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
