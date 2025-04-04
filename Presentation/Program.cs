@@ -16,7 +16,21 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<PollDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IPollRepository, PollRepository>();
+var repoSetting = builder.Configuration.GetValue<int>("RepositorySetting");
+
+switch (repoSetting)
+{
+    case 1:
+        builder.Services.AddScoped<IPollRepository, PollFileRepository>();
+        break;
+    case 2:
+    default:
+        builder.Services.AddScoped<IPollRepository, PollRepository>();
+        break;
+}
+
+//builder.Services.AddScoped<IPollRepository, PollRepository>();
+//builder.Services.AddScoped<IPollRepository, PollFileRepository>();
 
 var app = builder.Build();
 
