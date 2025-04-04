@@ -26,6 +26,7 @@
                 <td>@poll.DateCreated.ToShortDateString()</td>
                 <td>
                     <a asp-action="Vote" asp-route-id="@poll.Id" class="btn btn-success">Vote</a>
+                    <a asp-action="Results" asp-route-id="@poll.Id" class="btn btn-secondary ms-2">View Results</a>
                 </td>
             </tr>
         }
