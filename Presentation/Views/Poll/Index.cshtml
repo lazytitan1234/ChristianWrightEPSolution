@@ -4,54 +4,30 @@
     ViewData["Title"] = "Polls";
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">Poll List</h2>
-        <a asp-action="Create" class="btn btn-primary">+ New Poll</a>
-    </div>
+<h2>All Polls</h2>
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">No polls found.</div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Title</th>
-                        <th>Option 1</th>
-                        <th>Option 2</th>
-                        <th>Option 3</th>
-                        <th>Votes 1</th>
-                        <th>Votes 2</th>
-                        <th>Votes 3</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var poll in Model)
-                    {
-                        <tr>
-                            <td>@poll.Title</td>
-                            <td>@poll.Option1Text</td>
-                            <td>@poll.Option2Text</td>
-                            <td>@poll.Option3Text</td>
-                            <td>@poll.Option1VotesCount</td>
-                            <td>@poll.Option2VotesCount</td>
-                            <td>@poll.Option3VotesCount</td>
-                            <td>@poll.DateCreated.ToShortDateString()</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@poll.Id" class="btn btn-sm btn-info">Details</a>
-                                <a asp-action="Edit" asp-route-id="@poll.Id" class="btn btn-sm btn-warning">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@poll.Id" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Poll</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date Created</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var poll in Model)
+        {
+            <tr>
+                <td>@poll.Title</td>
+                <td>@poll.DateCreated.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Vote" asp-route-id="@poll.Id" class="btn btn-success">Vote</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

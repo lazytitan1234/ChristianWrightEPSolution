@@ -1,0 +1,28 @@
+﻿@model Domain.Models.Poll
+
+@{
+    ViewData["Title"] = "Vote";
+}
+
+<h2>Vote on: @Model.Title</h2>
+
+<form asp-action="Vote" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="selectedOption" value="1" required />
+        <label class="form-check-label">@Model.Option1Text</label>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="selectedOption" value="2" />
+        <label class="form-check-label">@Model.Option2Text</label>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="selectedOption" value="3" />
+        <label class="form-check-label">@Model.Option3Text</label>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Submit Vote</button>
+</form>

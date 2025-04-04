@@ -1,0 +1,24 @@
+﻿@model Domain.Models.Poll
+
+@{
+    ViewData["Title"] = "Poll Results";
+}
+
+<h2>Results for: @Model.Title</h2>
+
+<ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between">
+        <span>@Model.Option1Text</span>
+        <span>@Model.Option1VotesCount votes</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>@Model.Option2Text</span>
+        <span>@Model.Option2VotesCount votes</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>@Model.Option3Text</span>
+        <span>@Model.Option3VotesCount votes</span>
+    </li>
+</ul>
+
+<a asp-action="Index" class="btn btn-primary mt-3">Back to Polls</a>

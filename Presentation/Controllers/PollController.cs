@@ -1,5 +1,4 @@
-﻿using DataAccess;
-using DataAccess.Repositories;
+﻿using DataAccess.Repositories;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,6 +42,30 @@ namespace Presentation.Controllers
 
             TempData["message"] = "Poll created successfully!";
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Vote(int id)
+        {
+            var poll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
+            if (poll == null) return NotFound();
+
+            return View(poll);
+        }
+
+        [HttpPost]
+        public IActionResult Vote(int id, int selectedOption, [FromServices] PollRepository injectedRepo)
+        {
+            injectedRepo.Vote(id, selectedOption);
+            return RedirectToAction("Results", new { id = id });
+        }
+
+        public IActionResult Results(int id)
+        {
+            var poll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
+            if (poll == null) return NotFound();
+
+            return View(poll);
         }
     }
 }
