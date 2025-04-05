@@ -1,8 +1,11 @@
 ﻿using DataAccess.Repositories;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Security.Claims;
+using Presentation.Filters;
 
 namespace Presentation.Controllers
 {
@@ -54,9 +57,18 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [PreventDoubleVote]
         public IActionResult Vote(int id, int selectedOption, [FromServices] IPollRepository injectedRepo)
         {
-            injectedRepo.Vote(id, selectedOption);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Forbid();
+            }
+
+            injectedRepo.Vote(id, selectedOption, userId);
             return RedirectToAction("Results", new { id = id });
         }
 

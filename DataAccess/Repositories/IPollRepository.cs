@@ -15,6 +15,6 @@ namespace DataAccess.Repositories
 
         IEnumerable<Poll> GetPolls();
 
-        void Vote(int pollId, int optionNumber);
+        void Vote(int pollId, int optionNumber, string userId);
     }
 }

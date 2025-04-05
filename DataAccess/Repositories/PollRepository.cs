@@ -43,7 +43,7 @@ namespace DataAccess.Repositories
                            .ToList();
         }
 
-        public void Vote(int pollId, int optionNumber)
+        public void Vote(int pollId, int optionNumber, string userId)
         {
             var poll = _context.Polls.FirstOrDefault(p => p.Id == pollId);
 
@@ -62,6 +62,13 @@ namespace DataAccess.Repositories
                         break;
                 }
 
+                var voteRecord = new VoteRecord
+                {
+                    UserId = userId,
+                    PollId = pollId
+                };
+
+                _context.VoteRecords.Add(voteRecord);
                 _context.SaveChanges();
             }
         }

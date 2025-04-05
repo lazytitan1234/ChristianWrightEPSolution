@@ -44,7 +44,7 @@ namespace DataAccess.Repositories
             return JsonSerializer.Deserialize<List<Poll>>(json) ?? new List<Poll>();
         }
 
-        public void Vote(int pollId, int optionNumber)
+        public void Vote(int pollId, int optionNumber, string userId)
         {
             var polls = GetPolls().ToList();
             var poll = polls.FirstOrDefault(p => p.Id == pollId);

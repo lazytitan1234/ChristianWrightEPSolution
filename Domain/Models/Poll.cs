@@ -11,10 +11,10 @@ namespace Domain.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Option1Text { get; set; }
-        public string Option2Text { get; set; }
-        public string Option3Text { get; set; }
+        public required string Title { get; set; }
+        public required string Option1Text { get; set; }
+        public required string Option2Text { get; set; }
+        public required string Option3Text { get; set; }
         public int Option1VotesCount { get; set; }
         public int Option2VotesCount { get; set; }
         public int Option3VotesCount { get; set; }
