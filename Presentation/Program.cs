@@ -10,24 +10,38 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<PollDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddEntityFrameworkStores<PollDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<PollDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<PollDbContext>();
 builder.Services.AddControllersWithViews();
 
-var repoSetting = builder.Configuration.GetValue<int>("RepositorySetting");
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 
-switch (repoSetting)
-{
-    case 1:
-        builder.Services.AddScoped<IPollRepository, PollFileRepository>();
-        break;
-    case 2:
-    default:
-        builder.Services.AddScoped<IPollRepository, PollRepository>();
-        break;
-}
+builder.Services.AddScoped<PollRepository>();
+builder.Services.AddScoped<PollFileRepository>();
+
+builder.Services.AddScoped<IPollRepository, DynamicPollRepository>();
+
+
+//var repoSetting = builder.Configuration.GetValue<int>("RepositorySetting");
+
+//switch (repoSetting)
+//{
+//    case 1:
+//        builder.Services.AddScoped<IPollRepository, PollFileRepository>();
+//        break;
+//    case 2:
+//    default:
+//        builder.Services.AddScoped<IPollRepository, PollRepository>();
+//        break;
+//}
 
 //builder.Services.AddScoped<IPollRepository, PollRepository>();
 //builder.Services.AddScoped<IPollRepository, PollFileRepository>();
@@ -53,6 +67,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -24,6 +24,14 @@ namespace Presentation.Controllers
             return View(polls);
         }
 
+        [HttpPost]
+        public IActionResult SwitchRepo(string mode)
+        {
+            HttpContext.Session.SetString("RepoMode", mode);
+            return RedirectToAction("Index");
+        }
+
+
         [HttpGet]
         public IActionResult Create()
         {
