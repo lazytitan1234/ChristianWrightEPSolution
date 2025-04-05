@@ -1,8 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4">Welcome to Poll</h1>
+    <p class="lead">Create, vote, and visualize your favorite polls.</p>
+
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg me-2" asp-controller="Poll" asp-action="Create">Create a Poll</a>
+        <a class="btn btn-outline-secondary btn-lg" asp-controller="Poll" asp-action="Index">View All Polls</a>
+    </div>
+
+    <div class="mt-4">
+        <span class="badge bg-info text-dark">
+            Storage Mode: @Context.Session.GetString("RepoMode")?.ToUpper() ?? "SQL"
+        </span>
+    </div>
 </div>
