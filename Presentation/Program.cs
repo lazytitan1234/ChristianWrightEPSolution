@@ -8,8 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.WebHost.UseUrls("http://localhost:5000");
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<PollDbContext>(options =>
+//    options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<PollDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure();
+    }));
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -48,19 +53,29 @@ builder.Services.AddScoped<IPollRepository, DynamicPollRepository>();
 
 var app = builder.Build();
 
-app.UseMigrationsEndPoint();
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
+{
+    // Don't run migrations automatically in production
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//   
-//}
-//else
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-//    app.UseHsts();
-//}
+if (app.Environment.IsDevelopment())
+{
+
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
